@@ -3,6 +3,13 @@
 
 #include "GPowerU.h"
 
+static std::string data_path = "data/";
+
+void set_data_path( const std::string& dp )
+{
+	data_path = dp;
+};
+
 //CPU thread managing the parallel power data taking during the kernel execution
 void *threadWork(void * arg) {
 	unsigned int power[MAX_DEVICES];
@@ -80,7 +87,7 @@ float DataOutput() {
 
 
 	for(int d=0; d < device_count; d++){
-		std::string s = "data/nvml_power_profile";
+		std::string s = data_path + "nvml_power_profile";
 		s = s + std::to_string(d);
 
 		// Convert UUID to a string
@@ -132,7 +139,7 @@ float DataOutput() {
 int GPowerU_init() {
 	gettimeofday(&start_time,NULL);
 	int a;
-   int check = mkdir("data", 0777);
+   int check = mkdir(data_path.c_str(), 0777);
    
 #if MULTIGPU_DISABLED
    for (int i = 0; i < MAX_CHECKPOINTS; i++) {
@@ -201,19 +208,19 @@ int GPowerU_init() {
 void grapher(){
 	auto c1 = new TCanvas("c1","PowerMeas",200,10,700,500);
    c1->SetGrid();
-	TGraphErrors *gr1  = new TGraphErrors("data/nvml_power_profile0.csv", "%lg;%lg");
+	TGraphErrors *gr1  = new TGraphErrors(data_path + "nvml_power_profile0.csv", "%lg;%lg");
    gr1->Draw("AP");
    gr1->SetTitle("GPU Power Measurement (GPowerU) ;" "Time (s);" "Power (W)");
    
 #if MULTIGPU_DISABLED    
-   TGraphErrors *gr2  = new TGraphErrors("data/power_checkpoints.csv", "%lg;%lg");
+   TGraphErrors *gr2  = new TGraphErrors(data_path + "power_checkpoints.csv", "%lg;%lg");
    gr2->SetMarkerColor(4);
    gr2->SetMarkerStyle(20);
 	gr2->SetMarkerSize(1.5);
    gr2->Draw("P");
 #endif
    
-   c1->Print("data/gpu_graph.pdf");
+   c1->Print(data_path + "gpu_graph.pdf");
 }
 #endif
 
@@ -240,8 +247,9 @@ void GPowerU_checkpoints(){
  	FILE *fp2;
 	//struct timespec time_aux;
    struct timeval tv_aux;
-   
-	fp2 = fopen("data/power_checkpoints.csv", "w");
+  
+  	std::string path = data_path + "power_checkpoints.csv"; 
+	fp2 = fopen(path.c_str(), "w");
    fprintf(fp2,"#sep=;\n Timestamp [s]; Power[W]");
    	
    	

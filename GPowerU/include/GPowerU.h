@@ -26,7 +26,7 @@
 
 #define ROOT_ENABLED 0
 #define MULTIGPU_DISABLED 0
-#define TIME_STEP 0.00001  //Interval for sampling (in s)
+#define TIME_STEP 0.05  //Interval for sampling (in s)
 #define POWER_THRESHOLD 0 
 
 #if ROOT_ENABLED

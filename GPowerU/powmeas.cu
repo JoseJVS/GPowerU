@@ -42,7 +42,7 @@
         }
       __syncthreads();
 		
-		
+	
       take_GPU_time(true); //Checkpoint power measure __device__ function (last)
     } 
  
@@ -54,7 +54,21 @@ int numBlocks = (64 + blockSize - 1) / blockSize;
  
      
 int main( int argc, char** argv)
-    {	
+    {
+    	std::string data_path = "data/";
+	std::string cmd = "python script.py";
+	if ( argc > 1 )
+	{
+		data_path = std::string(argv[1]);
+	}
+	if ( argc > 2 )
+	{
+		cmd = std::string(argv[2]);
+	}
+	std::string args = "data path: " + data_path + " , cmd: " + cmd;
+	printf("Running with args: %s\n", args.c_str());
+	set_data_path( data_path );
+
     		 
 //Initializations ==> enable the NVML library, starts CPU thread for the power monitoring,  
 	if ( GPowerU_init() != 0 ) {
@@ -85,10 +99,9 @@ int main( int argc, char** argv)
       	checkCudaErrors(cudaFree(x));
       	checkCudaErrors(cudaFree(y));
      	
-#else
-		//Add here your executable/script
-		system("python ....py");
 #endif     	
+		//Add here your executable/script
+		system(cmd.c_str());
      	//Ends power monitoring, returns data output files
       	if ( GPowerU_end(2) != 0 )
 	{
