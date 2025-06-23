@@ -20,13 +20,13 @@
 
 #include <cuda.h>
 
-#define SAMPLE_MAX_SIZE_DEFAULT 1000000
+#define SAMPLE_MAX_SIZE_DEFAULT 10000000
 #define MAX_CHECKPOINTS 64
 #define MAX_DEVICES 4
 
 #define ROOT_ENABLED 0
 #define MULTIGPU_DISABLED 0
-#define TIME_STEP 0.05  //Interval for sampling (in s)
+#define TIME_STEP 0.1  //Interval for sampling (in s)
 #define POWER_THRESHOLD 0 
 
 #if ROOT_ENABLED

@@ -57,6 +57,7 @@ int main( int argc, char** argv)
     {
     	std::string data_path = "data/";
 	std::string cmd = "python script.py";
+	std::string pfx = "";
 	if ( argc > 1 )
 	{
 		data_path = std::string(argv[1]);
@@ -65,9 +66,14 @@ int main( int argc, char** argv)
 	{
 		cmd = std::string(argv[2]);
 	}
-	std::string args = "data path: " + data_path + " , cmd: " + cmd;
+	if ( argc > 3 )
+	{
+		pfx = std::string(argv[3]);
+	}
+	std::string args = "data path: " + data_path + " , cmd: " + cmd + " , prefix: " + pfx;
 	printf("Running with args: %s\n", args.c_str());
-	set_data_path( data_path );
+	set_data_path(data_path);
+	set_prefix(pfx);
 
     		 
 //Initializations ==> enable the NVML library, starts CPU thread for the power monitoring,  

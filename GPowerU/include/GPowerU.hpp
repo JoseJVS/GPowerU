@@ -4,10 +4,19 @@
 #include "GPowerU.h"
 
 static std::string data_path = "data/";
+static std::string prefix = "";
+static std::string data_prefix = data_path + prefix;
 
 void set_data_path( const std::string& dp )
 {
 	data_path = dp;
+	data_prefix = data_path + prefix;
+};
+
+void set_prefix( const std::string& pf )
+{
+	prefix = pf;
+	data_prefix = data_path + prefix + "_";
 };
 
 //CPU thread managing the parallel power data taking during the kernel execution
@@ -87,7 +96,7 @@ float DataOutput() {
 
 
 	for(int d=0; d < device_count; d++){
-		std::string s = data_path + "nvml_power_profile";
+		std::string s = data_prefix + "nvml_power_profile";
 		s = s + std::to_string(d);
 
 		// Convert UUID to a string
@@ -208,19 +217,19 @@ int GPowerU_init() {
 void grapher(){
 	auto c1 = new TCanvas("c1","PowerMeas",200,10,700,500);
    c1->SetGrid();
-	TGraphErrors *gr1  = new TGraphErrors(data_path + "nvml_power_profile0.csv", "%lg;%lg");
+	TGraphErrors *gr1  = new TGraphErrors(data_prefix + "nvml_power_profile0.csv", "%lg;%lg");
    gr1->Draw("AP");
    gr1->SetTitle("GPU Power Measurement (GPowerU) ;" "Time (s);" "Power (W)");
    
 #if MULTIGPU_DISABLED    
-   TGraphErrors *gr2  = new TGraphErrors(data_path + "power_checkpoints.csv", "%lg;%lg");
+   TGraphErrors *gr2  = new TGraphErrors(data_prefix + "power_checkpoints.csv", "%lg;%lg");
    gr2->SetMarkerColor(4);
    gr2->SetMarkerStyle(20);
 	gr2->SetMarkerSize(1.5);
    gr2->Draw("P");
 #endif
    
-   c1->Print(data_path + "gpu_graph.pdf");
+   c1->Print(data_prefix + "gpu_graph.pdf");
 }
 #endif
 
@@ -248,7 +257,7 @@ void GPowerU_checkpoints(){
 	//struct timespec time_aux;
    struct timeval tv_aux;
   
-  	std::string path = data_path + "power_checkpoints.csv"; 
+  	std::string path = data_prefix + "power_checkpoints.csv"; 
 	fp2 = fopen(path.c_str(), "w");
    fprintf(fp2,"#sep=;\n Timestamp [s]; Power[W]");
    	
