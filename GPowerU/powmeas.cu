@@ -55,9 +55,9 @@ int numBlocks = (64 + blockSize - 1) / blockSize;
      
 int main( int argc, char** argv)
     {
-    	std::string data_path = "data/";
-	std::string cmd = "python script.py";
-	std::string pfx = "";
+    	std::string data_path = "test";
+	std::string cmd = "sleep 1";
+	std::string pfx = "sleep";
 	if ( argc > 1 )
 	{
 		data_path = std::string(argv[1]);

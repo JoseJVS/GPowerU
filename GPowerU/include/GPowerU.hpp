@@ -3,20 +3,20 @@
 
 #include "GPowerU.h"
 
-static std::string data_path = "data/";
+static std::string data_path = "data";
 static std::string prefix = "";
-static std::string data_prefix = data_path + prefix;
+static std::string data_prefix = data_path + "/" + prefix;
 
 void set_data_path( const std::string& dp )
 {
 	data_path = dp;
-	data_prefix = data_path + prefix;
+	data_prefix = data_path + "/" + prefix;
 };
 
 void set_prefix( const std::string& pf )
 {
 	prefix = pf;
-	data_prefix = data_path + prefix + "_";
+	data_prefix = data_path + "/" + prefix + "_";
 };
 
 //CPU thread managing the parallel power data taking during the kernel execution
